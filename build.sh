@@ -17,7 +17,7 @@ echo "FIRMWARE Builder in "  $builderHome  " gestartet";
 echo "Buildverzeichnis ist " $1;
 echo "Firmware wird für Gluon "$2" gebaut;"
 echo "Build ist: " $3;
-
+export GLUON_RELEASE=$3;
 echo "**********************";
 cd $1
 pwd
