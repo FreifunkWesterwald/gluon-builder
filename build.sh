@@ -24,16 +24,16 @@ pwd
 if [ -d gluon/ ] ; then
   echo "verzeichnis vorhanden"
   cd gluon
-
-
-
 else
   git clone https://github.com/freifunk-gluon/gluon.git -b $2
   cd gluon
 fi
 
-pwd
-
+if [ -d site/ ] ; then
+  echo "site vorhanden"
+else
+  git clone https://github.com/FreifunkWesterwald/site-ffww.git site
+fi
 
 make update
 echo "ar71xx-generic wird gebaut:"
