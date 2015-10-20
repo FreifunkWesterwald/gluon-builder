@@ -21,10 +21,19 @@ echo "Build ist: " $3;
 echo "**********************";
 cd $1
 pwd
-git clone https://github.com/freifunk-gluon/gluon.git -b $2
-cd gluon
+if [ -d gluon/ ] ; then
+  echo "verzeichnis vorhanden"
+  cd gluon
+  
+
+
+else
+  git clone https://github.com/freifunk-gluon/gluon.git -b $2
+  cd gluon
+fi
+
 pwd
-git clone https://github.com/FreifunkWesterwald/site-fww.git site
+
 make clean
 make update
 echo "ar71xx-generic wird gebaut:"
