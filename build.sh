@@ -24,7 +24,7 @@ pwd
 if [ -d gluon/ ] ; then
   echo "verzeichnis vorhanden"
   cd gluon
-  
+
 
 
 else
@@ -38,23 +38,28 @@ make clean
 make update
 echo "ar71xx-generic wird gebaut:"
 echo "==========================="
-make -dkj 8 GLUON_BRANCH=stable GLUON_TARGET=ar71xx-generic V=s
+export GLUON_TARGET=ar71xx-generic
+make -dkj 2 GLUON_BRANCH=stable V=s
 echo "==========================="
 echo "ar71xx-nand wird gebaut:"
 echo "==========================="
-make -dkj 8 GLUON_BRANCH=stable GLUON_TARGET=ar71xx-nand V=s
+export GLUON_TARGET=ar71xx-nand
+make -dkj 2 GLUON_BRANCH=stable V=s
 echo "==========================="
 echo "mpc85xx-generic wird gebaut:"
 echo "==========================="
-make -dkj 8 GLUON_BRANCH=stable GLUON_TARGET=mpc85xx-generic V=s
+export GLUON_TARGET=mpc85xx-generic
+make -dkj 2 GLUON_BRANCH=stable V=s
 echo "==========================="
 echo "x86-generic wird gebaut:"
 echo "==========================="
-make -dkj 8 GLUON_BRANCH=stable GLUON_TARGET=x86-generic V=s
+export GLUON_TARGET=x86-generic
+make -dkj 2 GLUON_BRANCH=stable V=s
 echo "==========================="
 echo "KVM Guest  wird gebaut:"
 echo "==========================="
-make -dkj 8 GLUON_BRANCH=stable GLUON_TARGET=x86-kvm_guest V=s
+export GLUON_TARGET=x86-kvm_guest
+make -dkj 2 GLUON_BRANCH=stable V=s
 echo "==========================="
 
 echo "Build fertig nun Manifeste erstellen";
