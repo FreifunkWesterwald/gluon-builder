@@ -39,27 +39,27 @@ make update
 echo "ar71xx-generic wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=ar71xx-generic
-make -dkj 2 GLUON_BRANCH=stable V=s
+make -j 2 GLUON_BRANCH=stable
 echo "==========================="
 echo "ar71xx-nand wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=ar71xx-nand
-make -dkj 2 GLUON_BRANCH=stable V=s
+make -j 2 GLUON_BRANCH=stable
 echo "==========================="
 echo "mpc85xx-generic wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=mpc85xx-generic
-make -dkj 2 GLUON_BRANCH=stable V=s
+make -j 2 GLUON_BRANCH=stable
 echo "==========================="
 echo "x86-generic wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=x86-generic
-make -dkj 2 GLUON_BRANCH=stable V=s
+make -j 2 GLUON_BRANCH=stable
 echo "==========================="
 echo "KVM Guest  wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=x86-kvm_guest
-make -dkj 2 GLUON_BRANCH=stable V=s
+make -j 2 GLUON_BRANCH=stable
 echo "==========================="
 
 echo "Build fertig nun Manifeste erstellen";
