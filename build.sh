@@ -34,7 +34,7 @@ fi
 
 pwd
 
-make clean
+
 make update
 echo "ar71xx-generic wird gebaut:"
 echo "==========================="
