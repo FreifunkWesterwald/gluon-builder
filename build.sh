@@ -31,6 +31,9 @@ fi
 
 if [ -d site/ ] ; then
   echo "site vorhanden"
+  cd site
+  git pull
+  cd ..
 else
   git clone https://github.com/FreifunkWesterwald/site-ffww.git site
 fi
