@@ -46,7 +46,7 @@ make update
 echo "ar71xx-generic wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=ar71xx-generic
-make -j 2
+make -j 2 V=s
 echo "==========================="
 echo "ar71xx-nand wird gebaut:"
 echo "==========================="
