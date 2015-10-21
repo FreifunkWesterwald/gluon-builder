@@ -6,6 +6,7 @@
 # $1 = Buildverzeichnis: Ein Verzeichnis in das alles ausgecheckt wird und die Firmware gebaut wird.
 # $2 = GLUON Version gegen die gebaut werden soll, z.B. v2015.1.2
 # $3 = BUILD ID Wird vom Jenkins übergeben
+# $4 = BRANCH
 set -u
 set -e
 builderHome=`pwd`;
@@ -17,7 +18,9 @@ echo "FIRMWARE Builder in "  $builderHome  " gestartet";
 echo "Buildverzeichnis ist " $1;
 echo "Firmware wird für Gluon "$2" gebaut;"
 echo "Build ist: " $3;
-export GLUON_RELEASE=$3;
+echo "Branch : " $4;
+export GLUON_BRANCH=$4
+export GLUON_RELEASE=$(shell date '+%Y%m%d')-build_$3-$4-gluonversion_$2;
 echo "**********************";
 cd $1
 pwd
@@ -32,7 +35,8 @@ fi
 if [ -d site/ ] ; then
   echo "site vorhanden"
   cd site
-  git pull origin master
+  pwd
+  #git pull origin master
   cd ..
 else
   git clone https://github.com/FreifunkWesterwald/site-ffww.git site
@@ -42,33 +46,31 @@ make update
 echo "ar71xx-generic wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=ar71xx-generic
-make -j 2 GLUON_BRANCH=stable V=s
+make -j 2
 echo "==========================="
 echo "ar71xx-nand wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=ar71xx-nand
-make -j 2 GLUON_BRANCH=stable
+make -j 2
 echo "==========================="
 echo "mpc85xx-generic wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=mpc85xx-generic
-make -j 2 GLUON_BRANCH=stable
+make -j 2
 echo "==========================="
 echo "x86-generic wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=x86-generic
-make -j 2 GLUON_BRANCH=stable
+make -j 2
 echo "==========================="
 echo "KVM Guest  wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=x86-kvm_guest
-make -j 2 GLUON_BRANCH=stable
+make -j 2
 echo "==========================="
 
-echo "Build fertig nun Manifeste erstellen";
-make manifest GLUON_BRANCH=stable
-make manifest GLUON_BRANCH=beta
-make manifest GLUON_BRANCH=nightly
+echo "Build fertig nun Manifest erstellen";
+make manifest
 echo "Checksummen generieren"
 cd images
 find "$PWD" -type d | sort | while read dir;
