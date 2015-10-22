@@ -20,7 +20,7 @@ echo "Firmware wird für Gluon "$2" gebaut;"
 echo "Build ist: " $3;
 echo "Branch : " $4;
 export GLUON_BRANCH=$4
-export GLUON_RELEASE=$(shell date '+%Y%m%d')-build_$3-$4-gluonversion_$2;
+export GLUON_RELEASE=build_$3;
 echo "**********************";
 cd $1
 pwd
