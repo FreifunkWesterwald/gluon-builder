@@ -28,7 +28,7 @@ if [ -d gluon/ ] ; then
   echo "verzeichnis vorhanden"
   cd gluon
 else
-  git clone https://github.com/freifunk-gluon/gluon.git -b $2
+  git clone https://github.com/FreifunkWesterwald/gluon.git -b $2
   cd gluon
 fi
 
