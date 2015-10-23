@@ -47,31 +47,31 @@ echo "ar71xx-generic wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=ar71xx-generic
 make clean
-make -j4
+make -j2 V=s
 echo "==========================="
 echo "ar71xx-nand wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=ar71xx-nand
 make clean
-make -j4
+make -j2 V=s
 echo "==========================="
 echo "mpc85xx-generic wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=mpc85xx-generic
 make clean
-make -j4
+make -j2 V=s
 echo "==========================="
 echo "x86-generic wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=x86-generic
 make clean
-make -j4
+make -j2 V=s
 echo "==========================="
 echo "KVM Guest  wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=x86-kvm_guest
 make clean
-make -j4
+make -j2 V=s
 echo "==========================="
 
 echo "Build fertig nun Manifest erstellen";
