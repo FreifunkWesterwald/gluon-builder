@@ -51,22 +51,22 @@ echo "==========================="
 echo "ar71xx-nand wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=ar71xx-nand
-make -j2
+make -j2 V=s |& tee logfile
 echo "==========================="
 echo "mpc85xx-generic wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=mpc85xx-generic
-make -j2
+make -j2 V=s |& tee logfile
 echo "==========================="
 echo "x86-generic wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=x86-generic
-make -j2
+make -j2 V=s |& tee logfile
 echo "==========================="
 echo "KVM Guest  wird gebaut:"
 echo "==========================="
 export GLUON_TARGET=x86-kvm_guest
-make -j2
+make -j2 V=s |& tee logfile
 echo "==========================="
 
 echo "Build fertig nun Manifest erstellen";
