@@ -34,6 +34,7 @@ if [ $1 == 'gui' ]
  x86-kvm_guest "" off\
  x86-xen_domu "" off\
  sunxi "" off 3>&1 1>&2 2>&3`
+
 else
 
   community = $2
