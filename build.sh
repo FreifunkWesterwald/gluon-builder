@@ -20,7 +20,7 @@ if [ $1 == 'gui' ]
    community=`dialog --menu "Community auswählen" 0 0 0 \
    "Westerwald" "" "Altenkirchen" "" 3>&1 1>&2 2>&3`
    netz=`dialog --menu "Netz auswählen" 0 0 0 \
-   "Alt" "" "Neu" "" 3>&1 1>&2 2>&3`
+   "Alt" "" 3>&1 1>&2 2>&3`
    branch=`dialog --menu "Branch auswählen" 0 0 0 \
    "stable" "" "beta" "" "experimental" "" 3>&1 1>&2 2>&3`
    verzeichnis=`dialog --inputbox "Wo soll die Firmware gebaut werden?" 0 0 "/home/cernota/git/gluon-builder/build" \

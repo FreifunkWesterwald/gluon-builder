@@ -19,7 +19,7 @@ Folgende Abhängigkeiten müssen gegeben sein:
 ## Starten:
 
 GUI Mode:
-./bash gui
+./build.sh gui
 
 Servermode:
-./bash nogui (Parameter aus der build.sh übernehmen)
+./build.sh nogui (Parameter aus der build.sh übernehmen)
