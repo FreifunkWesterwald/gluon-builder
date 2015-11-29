@@ -1,10 +1,10 @@
 # Gluon Builder
 
-Diese Skripte bauen unsere Firmware.
+Dieses Script baut unsere Firmware.
 
 Folgende Abhängigkeiten müssen gegeben sein:
 
-* [Abhängigkeiten von Gluon](http://gluon.readthedocs.org/en/v2015.1.1/user/getting_started.html#dependencies)
+* [Abhängigkeiten von Gluon](http://gluon.readthedocs.org/en/latest/user/getting_started.html#dependencies)
 * Man benötigt einen Dev-Zugang zum Imageserver (Zuständig: Fabian)
 * Einen Signkey
 
@@ -22,4 +22,4 @@ GUI Mode:
 ./bash gui
 
 Servermode:
-./bash nogui ...
+./bash nogui (Parameter aus der build.sh übernehmen)
