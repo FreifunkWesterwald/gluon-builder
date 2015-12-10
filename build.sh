@@ -59,6 +59,7 @@ if [ ! -d gluon/ ]
     git clone https://github.com/FreifunkWesterwald/gluon.git
 fi
 cd gluon/
+make update
 rm -rf site/
 if [ $community == 'Westerwald' ]
   then
@@ -80,7 +81,6 @@ elif [[ $branch == 'stable' ]]; then
   export GLUON_RELEASE=$version-stable
 fi
 
-#make update
 for i in "${targets[@]}"
 do
    :
