@@ -7,7 +7,6 @@ The purpose of this container to make it possible to build Gluon on Debian Jessi
 ## Container Building  
 Create the image.
 ```sh
-cd image
 docker build -t gluon-builder .
 ```
 
@@ -17,7 +16,7 @@ docker build -t gluon-builder .
 ## Container useage
 Log in into the container.
 ```sh
-docker run --rm -e DISPLAY=$DISPLAY -v /tmp/.X11-unix/:/tmp/.X11-unix -it gluon-builder
+docker run --rm -it gluon-builder
 ```
 
 ### Notes
