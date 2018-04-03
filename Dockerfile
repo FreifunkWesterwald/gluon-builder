@@ -23,3 +23,10 @@ RUN apt update && apt-get install -y \
 RUN locale-gen en_US.UTF-8
 
 RUN apt-get autoremove -y
+
+RUN groupadd -g 114 gluon && \
+  useradd -m -u 108 -g 114 -d /home/gluon gluon && \
+  echo 'gluon:gluon' | chpasswd && \
+  echo "gluon ALL=NOPASSWD:ALL" >> /etc/sudoers
+
+USER gluon

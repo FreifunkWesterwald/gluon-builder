@@ -18,7 +18,3 @@ Log in into the container.
 ```sh
 docker run --rm -it gluon-builder
 ```
-
-### Notes
-* option "-e DISPLAY=$DISPLAY": Set DISPLAY environment variable to current display on the host machine
-* option "-v /tmp/.X11-unix/:/tmp/.X11-unix": Mount the X11 socket directory from the host machine in the container
