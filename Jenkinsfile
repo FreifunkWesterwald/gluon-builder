@@ -1,6 +1,9 @@
 pipeline {
     agent {
-        dockerfile true
+        dockerfile {
+            reuseNode true
+            args '-u 1000:1000'
+        }
     }
     parameters {
         string(name: 'TAG_NAME', defaultValue: 'v2017.1.5', description: 'Release tag on gluon git repository.')
