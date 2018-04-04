@@ -4,7 +4,7 @@ pipeline {
     }
     parameters {
         string(name: 'VERSION', defaultValue: 'v2017.1.5', description: 'Release tag on gluon git repository.')
-        string(name: 'RELEASE', defaultValue: '4.0.1', description: 'Firmware release number.')
+        string(name: 'RELEASE', defaultValue: '4.0.2', description: 'Firmware release number.')
         string(name: 'COMMUNITY', defaultValue: 'westerwald', description: 'Community name. Can be: westerwald, neuwied, altenkirchen or limburg')
         string(name: 'BRANCH', defaultValue: 'stable', description: 'Gluon branch name. Can be: stable, beta, exprimental')
         string(name: 'PRIORITY', defaultValue: '4', description: 'Defines the priority of an automatic update.')
@@ -39,6 +39,18 @@ pipeline {
                 withCredentials([file(credentialsId: '7f642a46-f47e-4038-bd9a-5bf8dbf3a4d6', variable: 'SECRETKEY')]) {
                     sh 'contrib/sign.sh ${SECRETKEY} ${WORKSPACE}/output/images/sysupgrade/${GLUON_BRANCH}.manifest'
                 }
+            }
+        }
+        stage('Publish build') {
+            steps {
+                sshPublisher(publishers: [sshPublisherDesc(configName: 'web.thepaffy.de:/opt/images', transfers: [sshTransfer(excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '${params.COMMUNITY}/testing', remoteDirectorySDF: false, removePrefix: 'output/images', sourceFiles: 'output/images/**/*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+            }
+        }
+        stage('Trigger E-Mail') {
+            steps {
+                emailext body: '''${JOB_NAME} - Build # ${BUILD_NUMBER} - ${currentBuild.result}:
+
+Check console output at ${currentBuild.absoluteUrl} to view the results.''', subject: '${JOB_NAME} - Build # ${BUILD_NUMBER} - ${currentBuild.result}', to: 'noc@freifunk-westerwald.de,mail@thepaffy.de'
             }
         }
     }
