@@ -1,4 +1,4 @@
-FROM debian:jessie
+FROM debian:jessie-backports
 
 LABEL Description="Gluon builder with Debain Jessie"
 MAINTAINER Christian Paffhausen <mail@thepaffy.de>
@@ -7,7 +7,7 @@ MAINTAINER Christian Paffhausen <mail@thepaffy.de>
 ENV LANG=en_US.UTF-8
 
 RUN echo 'Debug::pkgProblemResolver "true";' > /etc/apt/apt.conf.d/Debug
-RUN apt update && apt-get install -y \
+RUN apt update && apt upgrade -y && apt-get install -y \
   git \
   subversion \
   python \
@@ -18,7 +18,8 @@ RUN apt update && apt-get install -y \
   zlib1g-dev \
   libssl-dev \
   wget \
-  locales
+  locales \
+  ecdsautils
 
 RUN locale-gen en_US.UTF-8
 
