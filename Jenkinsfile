@@ -12,14 +12,13 @@ pipeline {
     stages {
         stage('Fetch sources') {
             steps {
-                echo "VERSION: ${params.VERSION}"
                 checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: 'refs/tags/${VERSION}']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'gluon']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/freifunk-gluon/gluon.git']]]
                 checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: 'refs/tags/${RELEASE}']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'sites']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/FreifunkWesterwald/sites.git']]]
             }
         }
         stage('Build gluon') {
             environment {
-                GLUON_SITEDIR = '${WORKSPACE}/sites/${params.COMMUNITY}'
+                GLUON_SITEDIR = "${WORKSPACE}/sites/${params.COMMUNITY}"
                 GLUON_LANGS = 'de en'
                 GLUON_REGION = 'eu'
                 GLUON_RELEASE = '${params.RELEASE}'
