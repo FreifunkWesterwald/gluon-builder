@@ -50,8 +50,8 @@ pipeline {
             steps {
                 dir('gluon') {
                     sshPublisher(publishers: [sshPublisherDesc(configName: 'web.thepaffy.de:/opt/images', transfers: [sshTransfer(excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "${params.COMMUNITY}/testing", remoteDirectorySDF: false, removePrefix: 'output/images', sourceFiles: 'output/images/**/*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
-                    archiveArtifacts 'output/images/sysupgrade/${GLUON_BRANCH}.manifest.sha256sum'
-                    fingerprint 'output/images/sysupgrade/${GLUON_BRANCH}.manifest.sha256sum'
+                    archiveArtifacts "output/images/sysupgrade/${GLUON_BRANCH}.manifest.sha256sum"
+                    fingerprint "output/images/sysupgrade/${GLUON_BRANCH}.manifest.sha256sum"
                 }
             }
         }
