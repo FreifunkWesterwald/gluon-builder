@@ -3,24 +3,27 @@ pipeline {
         dockerfile true
     }
     parameters {
-        string(name: 'TAG_NAME', defaultValue: 'v2017.1.5', description: 'Release tag on gluon git repository.')
-        string(name: 'GLUON_RELEASE', defaultValue: '4.0.1', description: 'Firmware release number.')
+        string(name: 'VERSION', defaultValue: 'v2017.1.5', description: 'Release tag on gluon git repository.')
+        string(name: 'RELEASE', defaultValue: '4.0.1', description: 'Firmware release number.')
         string(name: 'COMMUNITY', defaultValue: 'westerwald', description: 'Community name. Can be: westerwald, neuwied, altenkirchen or limburg')
-        string(name: 'GLUON_BRANCH', defaultValue: 'stable', description: 'Gluon branch name. Can be: stable, beta, exprimental')
-        string(name: 'GLUON_PRIORITY', defaultValue: '4', description: 'Defines the priority of an automatic update.')
+        string(name: 'BRANCH', defaultValue: 'stable', description: 'Gluon branch name. Can be: stable, beta, exprimental')
+        string(name: 'PRIORITY', defaultValue: '4', description: 'Defines the priority of an automatic update.')
     }
     stages {
         stage('Fetch sources') {
             steps {
-                checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: 'refs/tags/${TAG_NAME}']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/freifunk-gluon/gluon.git']]]
-                checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: 'refs/tags/${GLUON_RELEASE}']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'sites']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/FreifunkWesterwald/sites.git']]]
+                checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: 'refs/tags/${params.VERSION}']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/freifunk-gluon/gluon.git']]]
+                checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: 'refs/tags/${params.RELEASE}']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'sites']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/FreifunkWesterwald/sites.git']]]
             }
         }
         stage('Build gluon') {
             environment {
-                GLUON_SITEDIR = '${WORKSPACE}/sites/${COMMUNITY}'
+                GLUON_SITEDIR = '${WORKSPACE}/sites/${params.COMMUNITY}'
                 GLUON_LANGS = 'de en'
                 GLUON_REGION = 'eu'
+                GLUON_RELEASE = '${params.RELEASE}'
+                GLUON_BRANCH = '${params.BRANCH}'
+                GLUON_PRIORITY = '${params.PRIORITY}'
             }
             steps {
                 sh 'make update'
