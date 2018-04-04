@@ -38,7 +38,7 @@ pipeline {
                     sh 'make GLUON_TARGET=x86-64 V=s -j6'
                     sh 'make manifest'
                     withCredentials([file(credentialsId: '7f642a46-f47e-4038-bd9a-5bf8dbf3a4d6', variable: 'SECRETKEY')]) {
-                        sh 'contrib/sign.sh ${SECRETKEY} ${WORKSPACE}/output/images/sysupgrade/${GLUON_BRANCH}.manifest'
+                        sh 'contrib/sign.sh ${SECRETKEY} output/images/sysupgrade/${GLUON_BRANCH}.manifest'
                     }
                 }
             }
