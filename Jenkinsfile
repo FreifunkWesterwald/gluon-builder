@@ -42,21 +42,24 @@ pipeline {
                     withCredentials([file(credentialsId: '7f642a46-f47e-4038-bd9a-5bf8dbf3a4d6', variable: 'SECRETKEY')]) {
                         sh 'contrib/sign.sh ${SECRETKEY} output/images/sysupgrade/${GLUON_BRANCH}.manifest'
                     }
+                    sh 'sha256sum output/images/sysupgrade/${GLUON_BRANCH}.manifest > output/images/sysupgrade/${GLUON_BRANCH}.manifest.sha256sum'
                 }
             }
         }
         stage('Publish build') {
             steps {
                 dir('gluon') {
-                    sshPublisher(publishers: [sshPublisherDesc(configName: 'web.thepaffy.de:/opt/images', transfers: [sshTransfer(excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '${params.COMMUNITY}/testing', remoteDirectorySDF: false, removePrefix: 'output/images', sourceFiles: 'output/images/**/*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+                    sshPublisher(publishers: [sshPublisherDesc(configName: 'web.thepaffy.de:/opt/images', transfers: [sshTransfer(excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "${params.COMMUNITY}/testing", remoteDirectorySDF: false, removePrefix: 'output/images', sourceFiles: 'output/images/**/*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+                    archiveArtifacts 'output/images/sysupgrade/${GLUON_BRANCH}.manifest.sha256sum'
+                    fingerprint 'output/images/sysupgrade/${GLUON_BRANCH}.manifest.sha256sum'
                 }
             }
         }
         stage('Trigger E-Mail') {
             steps {
-                emailext body: '''${JOB_NAME} - Build # ${BUILD_NUMBER} - ${currentBuild.result}:
+                emailext body: '''${JOB_NAME} - Build # ${BUILD_NUMBER} - "${currentBuild.result}":
 
-Check console output at ${currentBuild.absoluteUrl} to view the results.''', subject: '${JOB_NAME} - Build # ${BUILD_NUMBER} - ${currentBuild.result}', to: 'noc@freifunk-westerwald.de,mail@thepaffy.de'
+Check console output at "${currentBuild.absoluteUrl}" to view the results.''', subject: '${JOB_NAME} - Build # ${BUILD_NUMBER} - "${currentBuild.result}"!', to: 'noc@freifunk-westerwald.de,mail@thepaffy.de'
             }
         }
     }
