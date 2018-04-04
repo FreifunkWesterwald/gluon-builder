@@ -12,8 +12,8 @@ pipeline {
     stages {
         stage('Fetch sources') {
             steps {
-                checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: 'refs/tags/${VERSION}']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'gluon']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/freifunk-gluon/gluon.git']]]
-                checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: 'refs/tags/${RELEASE}']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'sites']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/FreifunkWesterwald/sites.git']]]
+                checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: "refs/tags/${params.VERSION}"]], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'gluon']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/freifunk-gluon/gluon.git']]]
+                checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: "refs/tags/${params.RELEASE}"]], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'sites']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/FreifunkWesterwald/sites.git']]]
             }
         }
         stage('Build gluon') {
@@ -21,9 +21,9 @@ pipeline {
                 GLUON_SITEDIR = "${WORKSPACE}/sites/${params.COMMUNITY}"
                 GLUON_LANGS = 'de en'
                 GLUON_REGION = 'eu'
-                GLUON_RELEASE = '${params.RELEASE}'
-                GLUON_BRANCH = '${params.BRANCH}'
-                GLUON_PRIORITY = '${params.PRIORITY}'
+                GLUON_RELEASE = "${params.RELEASE}"
+                GLUON_BRANCH = "${params.BRANCH}"
+                GLUON_PRIORITY = "${params.PRIORITY}"
             }
             steps {
                 dir('gluon') {
