@@ -7,7 +7,7 @@ The purpose of this container to make it possible to build Gluon on Debian Jessi
 ## Container Building  
 Create the image.
 ```sh
-docker build -t gluon-builder .
+docker build -t gluon-builder ./image/
 ```
 
 ### Notes

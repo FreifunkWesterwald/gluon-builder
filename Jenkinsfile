@@ -1,6 +1,8 @@
 pipeline {
     agent {
-        dockerfile true
+        dockerfile {
+            dir 'image'
+        }
     }
     parameters {
         string(name: 'VERSION', defaultValue: 'v2017.1.5', description: 'Release tag on gluon git repository.')
