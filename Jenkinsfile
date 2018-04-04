@@ -12,8 +12,9 @@ pipeline {
     stages {
         stage('Fetch sources') {
             steps {
-                checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: 'refs/tags/${params.VERSION}']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/freifunk-gluon/gluon.git']]]
-                checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: 'refs/tags/${params.RELEASE}']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'sites']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/FreifunkWesterwald/sites.git']]]
+                echo "VERSION: ${params.VERSION}"
+                checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: 'refs/tags/${VERSION}']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'gluon']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/freifunk-gluon/gluon.git']]]
+                checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: 'refs/tags/${RELEASE}']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: 'sites']], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/FreifunkWesterwald/sites.git']]]
             }
         }
         stage('Build gluon') {
@@ -26,24 +27,28 @@ pipeline {
                 GLUON_PRIORITY = '${params.PRIORITY}'
             }
             steps {
-                sh 'make update'
-                sh 'make GLUON_TARGET=ar71xx-generic V=s -j6'
-                sh 'make GLUON_TARGET=ar71xx-tiny V=s -j6'
-                sh 'make GLUON_TARGET=ar71xx-nand V=s -j6'
-                sh 'make GLUON_TARGET=brcm2708-bcm2708 V=s -j6'
-                sh 'make GLUON_TARGET=brcm2708-bcm2709 V=s -j6'
-                sh 'make GLUON_TARGET=mpc85xx-generic V=s -j6'
-                sh 'make GLUON_TARGET=x86-generic V=s -j6'
-                sh 'make GLUON_TARGET=x86-64 V=s -j6'
-                sh 'make manifest'
-                withCredentials([file(credentialsId: '7f642a46-f47e-4038-bd9a-5bf8dbf3a4d6', variable: 'SECRETKEY')]) {
-                    sh 'contrib/sign.sh ${SECRETKEY} ${WORKSPACE}/output/images/sysupgrade/${GLUON_BRANCH}.manifest'
+                dir('gluon') {
+                    sh 'make update'
+                    sh 'make GLUON_TARGET=ar71xx-generic V=s -j6'
+                    sh 'make GLUON_TARGET=ar71xx-tiny V=s -j6'
+                    sh 'make GLUON_TARGET=ar71xx-nand V=s -j6'
+                    sh 'make GLUON_TARGET=brcm2708-bcm2708 V=s -j6'
+                    sh 'make GLUON_TARGET=brcm2708-bcm2709 V=s -j6'
+                    sh 'make GLUON_TARGET=mpc85xx-generic V=s -j6'
+                    sh 'make GLUON_TARGET=x86-generic V=s -j6'
+                    sh 'make GLUON_TARGET=x86-64 V=s -j6'
+                    sh 'make manifest'
+                    withCredentials([file(credentialsId: '7f642a46-f47e-4038-bd9a-5bf8dbf3a4d6', variable: 'SECRETKEY')]) {
+                        sh 'contrib/sign.sh ${SECRETKEY} ${WORKSPACE}/output/images/sysupgrade/${GLUON_BRANCH}.manifest'
+                    }
                 }
             }
         }
         stage('Publish build') {
             steps {
-                sshPublisher(publishers: [sshPublisherDesc(configName: 'web.thepaffy.de:/opt/images', transfers: [sshTransfer(excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '${params.COMMUNITY}/testing', remoteDirectorySDF: false, removePrefix: 'output/images', sourceFiles: 'output/images/**/*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+                dir('gluon') {
+                    sshPublisher(publishers: [sshPublisherDesc(configName: 'web.thepaffy.de:/opt/images', transfers: [sshTransfer(excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '${params.COMMUNITY}/testing', remoteDirectorySDF: false, removePrefix: 'output/images', sourceFiles: 'output/images/**/*')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])
+                }
             }
         }
         stage('Trigger E-Mail') {
